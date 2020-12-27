@@ -2,7 +2,7 @@
 :-include("KB.pl").
 
 % Goal Test
-goal_test(S):-
+goal(S):-
 	ethanAxiom(location(X,Y),S,C,[]),submarine(X,Y),capacity(C).
 	
 % locations of imf members 	
