@@ -16,14 +16,21 @@ ethanAxiom(location(X,Y),s0,C,Acc):-
     ethan_loc(X,Y),capacity(C),members_loc(Acc).
 
 ethanAxiom(location(X,Y),result(A,S),C,Acc):-
-	  ethanAxiom(location(X0,Y0),S,C0,Acc0)
+	  (ethanAxiom(location(X0,Y0),S,C0,Acc0)
 	 ,((A=right,X is X0,Y is Y0+1,C is C0,Acc = Acc0)
 	 ;(A=left,X is X0,Y is Y0-1,C is C0,Acc = Acc0)
 	 ;(A=up,Y is Y0,X is X0-1,C is C0,Acc = Acc0)
 	 ;(A=down,Y is Y0,X is X0+1,C is C0,Acc = Acc0)
 	 ;(A=carry,X is X0 , Y is Y0, members_loc(L),member([X,Y],L),C is C0-1,C0 > 0,member([X,Y],Acc0),delete(Acc0,[X,Y],Acc))
 	 ;(A=drop, X is X0, Y is Y0,is_contatin_submarine(location(X,Y)),capacity(C),Acc = Acc0))
-	 ,in_grid(location(X,Y)).
+	 ,in_grid(location(X,Y)))
+	 ;\+(ethanAxiom(location(X0,Y0),S,C,Acc)
+	 ;((\+A=right;in_grid(X,Y))
+	 ;(\+A=left;in_grid(X,Y))
+	 ;(\+A=up;in_grid(X,Y))
+	 ;(\+A=down;in_grid(X,Y))
+	 ;(\+A=carry;members_loc(L);member([X,Y],L);member([X,Y],Acc0);delete(Acc0,[X,Y],Acc))
+	 ;(\+A=drop;is_contatin_submarine(location(X,Y))))).
 	
 	
 % AXioms constraints 
